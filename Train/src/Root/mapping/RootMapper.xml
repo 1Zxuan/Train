@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Root.mapping.RootMapper" >
+	<resultMap type="java.util.Map" id="resultTrainName">
+		<result property="TrainName" column="TrainName"  />
+	</resultMap>
+	
+	<resultMap type="Root.Bean.TrainStation" id="resultTrainNameInfo">
+		<result column="arrive_day_diff" property="arrive_day_diff"/>
+		<result column="station_no" property="station_no" />
+		<result column="station_name" property="station_name" />
+		<result column="arrive_time" property="arrive_time" />
+		<result column="TrainName" property="TrainName" />
+		<result column="start_time" property="start_time" />
+		<result column="running_time" property="running_time" />
+		<result column="BusinessClass" property="BusinessClass" />
+		<result column="FirstClass" property="FirstClass" />
+		<result column="SecondClass" property="SecondClass" />
+		<result column="high_GradeSB" property="high_GradeSB" />
+		<result column="SoftBerth" property="SoftBerth" />
+		<result column="Reclining" property="Reclining" />
+		<result column="HardBerth" property="HardBerth" />
+		<result column="SoftSeats" property="SoftSeats" />
+		<result column="HardSeat" property="HardSeat" />
+		<result column="NoSeat" property="NoSeat" />
+		<result column="Other" property="Other" />
+	</resultMap>
+	<select id="trainNameList"  resultMap="resultTrainName">
+		SELECT DISTINCT TrainName FROM trainstion 
+	</select>
+	
+	<select id="trainNameInfo" parameterType="java.lang.String" resultMap="resultTrainNameInfo">
+		select * from trainstion where TrainName=#{trainName} ORDER BY station_no
+	</select>
+	
+	<update id="ChangeData" parameterType="java.util.Map">
+		UPDATE trainstion SET 
+			start_time =#{start_time} ,arrive_time=#{arrive_time} 
+		WHERE 
+			TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+</mapper>

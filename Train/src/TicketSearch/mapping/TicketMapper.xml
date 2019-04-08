@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TicketSearch.mapping.TicketMapper" >
+	<resultMap type="java.util.Map" id="resultHomepageTicketInfo">
+		<result column="userName" property="userName" />
+		<result column="TrainName" property="TrainName" />
+		<result column="IDCard" property="IDCard" />
+		<result column="startstation" property="startstation" />
+		<result column="endstation" property="endstation" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="phone" property="phone" />
+		<result column="SeatType" property="SeatType" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="resultPDGaiQian">
+		<result column="gaiqian" property="gaiqian"/>
+	</resultMap>
+	<select id="HomepageTicketInfo" parameterType="java.lang.String" resultMap="resultHomepageTicketInfo">
+		select * from userticket where userName=#{string}
+	</select>
+	
+	<delete id="Unsubscribe" parameterType="java.util.Map">
+		DELETE FROM userticket WHERE TrainName=#{trainName} and userName=#{userName}
+	</delete>
+	
+	<select id="SearchStartStation_NO" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select station_no from trainstion where TrainName=#{trainName} and station_name=#{startstation};
+	</select>
+	
+	<select id="SearchEndStation_NO" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select station_no from trainstion where TrainName=#{trainName} and station_name=#{endstation};
+	</select>
+	
+	<!-- 
+	
+	
+	
+		更新车票数量
+	
+	
+	 -->
+	<update id="UpdateSeat_FirstClass" parameterType="java.util.Map">
+		UPDATE trainstion SET FirstClass=FirstClass+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_SecondClass" parameterType="java.util.Map">
+		UPDATE trainstion SET SecondClass=SecondClass+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_NoSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET NoSeat=NoSeat+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_SoftBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET SoftBerth=SoftBerth+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_HardBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET HardBerth=HardBerth+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	<update id="UpdateSeat_HardSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET HardSeat=HardSeat+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	<update id="UpdateSeat_high_GradeSB" parameterType="java.util.Map">
+		UPDATE trainstion SET high_GradeSB=high_GradeSB+1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<!-- 
+	
+		判断是否可以改签
+		
+	 -->
+	 
+	 <select id="pdgaiqian" parameterType="java.util.Map" resultMap="resultPDGaiQian">
+	 
+	 	select gaiqian from userticket where userName=#{userName} and TrainName=#{trainName}
+	 
+	 </select>
+</mapper>

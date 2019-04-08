@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Search.mapping.SearchMapper">
+	<resultMap type="java.util.Map" id="resultSearch" >
+		<result property="key" column="TrainName"/>
+		<result property="value" column="station_no"/>
+	</resultMap>
+	<!-- 
+		column是你数据库的字段，property是你bean里面对应的字段
+	 -->
+	<resultMap type="Search.Bean.TrainList" id="FinallyList">
+		<result column="arrive_day_diff" property="arrive_day_diff"/>
+		<result column="station_no" property="station_no" />
+		<result column="station_name" property="station_name" />
+		<result column="arrive_time" property="arrive_time" />
+		<result column="TrainName" property="TrainName" />
+		<result column="start_time" property="start_time" />
+		<result column="running_time" property="running_time" />
+		<result column="BusinessClass" property="BusinessClass" />
+		<result column="FirstClass" property="FirstClass" />
+		<result column="SecondClass" property="SecondClass" />
+		<result column="high_GradeSB" property="high_GradeSB" />
+		<result column="SoftBerth" property="SoftBerth" />
+		<result column="Reclining" property="Reclining" />
+		<result column="HardBerth" property="HardBerth" />
+		<result column="SoftSeats" property="SoftSeats" />
+		<result column="HardSeat" property="HardSeat" />
+		<result column="NoSeat" property="NoSeat" />
+		<result column="Other" property="Other" />
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="resultStartstationname">
+		<result column="station_name" property="station_name" />
+	</resultMap>
+	<select id="SearchStartStation" parameterType="java.util.Map" resultMap="resultSearch">
+	
+		select station_no, TrainName from trainstion 
+		
+		where station_name=#{StartStation} group by TrainName
+		
+	</select>
+		<select id="SearchEndStation" parameterType="java.util.Map" resultMap="resultSearch">
+	
+		select station_no, TrainName from trainstion 
+		
+		where station_name=#{EndStation} group by TrainName
+		
+	</select>
+	
+	<select id="reList" parameterType="java.util.Map" resultMap="FinallyList">
+		select * from trainstion where TrainName=#{TrainName} and station_name=#{StartStation}
+	</select>
+	
+	<select id="GetStartStationName" resultMap="resultStartstationname">
+		SELECT DISTINCT station_name FROM trainstion
+	</select>
+	
+	<select id="GetEndStationName" resultMap="resultStartstationname">
+		SELECT DISTINCT station_name FROM trainstion
+	</select>
+</mapper>

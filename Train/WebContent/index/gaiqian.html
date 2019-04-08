@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>改签</title>
+	<script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+ 	<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+ 	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+	<script type="text/javascript" src="../js/bootstrap.js"></script>
+	<link rel="styleSheet" href="../css/bootstrap.css"/>
+	<script type="text/javascript" src="../js/gaiqian.js"></script>
+</head>
+<body>
+	<div>
+		<label>起始站:</label><input type="text" id="startstation" readonly="readonly" /><br>
+		至:<br>
+		<label>终点站:</label><input type="text" id="endstation" readonly="readonly" />
+	</div>
+	<label>出发日期：</label>
+	<input type="text" id="StartDate"/><br>
+	<div>
+		<input id="Search" type="button" value="查询" class="btn btn-primary"/> &nbsp;
+		<input id="quxiao" type="button" value="取消" class="btn btn-primary"/>&nbsp;
+		<input id="loginout" type="button"	value="退出"  class="btn btn-primary"/>
+	</div>
+	<h1>查询结果:</h1>
+	<div id="table" style="text-align:center">
+	</div>
+</body>
+</html>

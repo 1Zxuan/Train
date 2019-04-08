@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>登录</title>
+	<link rel="styleSheet" href="../css/bootstrap.css"/>
+	<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="../js/md5.js"></script>
+    <script type="text/javascript" src="../js/js.KinerCode.js"></script>
+    <script type="text/javascript" src="../js/login.js"></script>
+	</head>
+	
+	<body>
+			<label>用户名：</label>
+			<input type="text" name="UserName" id="user"/><!-- 用户名文本框 -->
+			<br>
+			<label>密    码：</label>
+			
+			<input type="password" name="PassWord" id="password"/>	<!-- 密码 -->
+			
+			<input id="inputCode" type="text" /><!--验证码 -->
+
+            <span id="code" class="mycode"></span>
+		<input type="button" value="登录" id="login" class="btn btn-primary"/>
+		<input type="button" value="注册" id="registered" class="btn btn-primary"/>
+	</body>
+	
+</html>

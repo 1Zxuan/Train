@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Buy.mapping.BuyMapper" >
+	<!-- 
+		column是你数据库的字段，property是你bean里面对应的字段
+	 -->
+	<resultMap type="java.util.Map" id="resultTicketinfo_D"><!-- 查询D车座位信息 -->
+		<result column="station_no" property="station_no"/>
+		<result column="start_time" property="start_time"/>
+		<result column="FirtClass" property="FirtClass" />
+		<result column="SecondClass" property="SecondClass" />
+		<result column="NoSeat" property="NoSeat" />
+	</resultMap>
+	<resultMap type="java.util.Map" id="resultTicketinfo_arrive_day_D">
+		<result column="station_no" property="station_no" />
+		<result column="arrive_time" property="arrive_time"/>
+		<result column="arrive_day_diff" property="arrive_day_diff"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="resultTicketinfo_Z"><!-- 查询Z车座位信息 -->
+		<result column="station_no" property="station_no"/>
+		<result column="start_time" property="start_time"	/>
+		<result column="high_GradeSB" property="high_GradeSB"/>
+		<result column="SoftBerth" property="SoftBerth"/>
+		<result column="HardBerth" property="HardBerth" />
+		<result column="HardSeat" property="HardSeat"/>
+		<result column="NoSeat" property="NoSeat"/>
+	</resultMap>
+	<resultMap type="java.util.Map" id="resultTicketinfo_arrive_day_Z">
+		<result column="station_no" property="station_no"/>
+		<result column="arrive_time" property="arrive_time"/>
+		<result column="arrive_day_diff" property="arrive_day_diff"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="resultTicketinfo_T">
+		<result column="station_no" property="station_no"/>
+		<result column="start_time" property="start_time" />
+		<result column="SoftBerth" property="SoftBerth"/>
+		<result column="HardBerth" property="HardBerth"/>
+		<result column="HardSeat" property="HardSeat"/>
+		<result column="NoSeat" property="NoSeat"/>
+	</resultMap>
+	<resultMap type="java.util.Map" id="resultTicketinfo_arrive_day_T">
+		<result column="station_no" property="station_no"/>
+		<result column="arrive_time" property="arrive_time"/>
+		<result column="arrive_day_diff" property="arrive_day_diff"/>
+	</resultMap>
+	
+	<resultMap type="java.util.Map" id="resultuserinfo">
+		<result column="phone" property="phone" />
+		<result column="tourist" property="tourist" />
+		<result column="IDCard" property="IDCard" />
+	</resultMap>
+	
+	<select id="SearchTicketinfo_D" parameterType="java.util.Map" resultMap="resultTicketinfo_D">
+		SELECT station_no,start_time,FirstClass,SecondClass,NoSeat FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{startstation}
+	</select>
+	<select id="SearchTicketinfo_arrive_day_D" parameterType="java.util.Map" resultMap="resultTicketinfo_arrive_day_D">
+		SELECT station_no,arrive_time,arrive_day_diff FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{endstation}
+	</select>
+	
+	<select id="SearchTicketinfo_Z" parameterType="java.util.Map" resultMap="resultTicketinfo_Z">
+		SELECT station_no,start_time,high_GradeSB,SoftBerth,HardBerth,HardSeat,NoSeat FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{startstation}
+	</select>
+	<select id="SearchTicketinfo_arrive_day_Z" parameterType="java.util.Map" resultMap="resultTicketinfo_arrive_day_Z">
+		SELECT station_no,arrive_time,arrive_day_diff FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{endstation}
+	</select>
+	
+	<select id="SearchTicketinfo_T" parameterType="java.util.Map" resultMap="resultTicketinfo_T">
+		SELECT station_no,start_time,SoftBerth,HardBerth,HardSeat,NoSeat FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{startstation}
+	</select>
+	<select id="SearchTicketinfo_arrive_day_T" parameterType="java.util.Map" resultMap="resultTicketinfo_arrive_day_T">
+		SELECT station_no,arrive_time,arrive_day_diff FROM trainstion 
+		WHERE TrainName=#{trainName} AND station_name=#{endstation}
+	</select>
+	
+	<select id="Searchuserinfo" parameterType="java.util.Map" resultMap="resultuserinfo">
+		select phone,IDCard,tourist from user 
+		where userName=#{userName}
+	</select>
+	
+	<insert id="BuyTicket" parameterType="java.util.Map">
+		insert into userticket
+			(userName,TrainName,IDCard,startstation,endstation,starttime,endtime,phone,SeatType)
+		values
+			(#{userName},#{trainName},#{IDCard},#{startstation},#{endstation},#{start_time},#{arrive_time},#{phone},#{SeatName})
+		<selectKey resultType="java.lang.Boolean" keyProperty="count">
+			<![CDATA[
+				select count(*) from userticket where IDCard=#{IDCard}
+			]]>
+		</selectKey>
+	</insert>
+	
+	<select id="CheckTicket" parameterType="java.util.Map" resultType="java.lang.Boolean">
+		<![CDATA[
+			select count(*) from userticket where userName=#{userName} and TrainName=#{trainName}
+		]]>
+	</select>
+	
+	<insert id="GQTicket" parameterType="java.util.Map">
+		insert into userticket
+			(userName,TrainName,IDCard,startstation,endstation,starttime,endtime,phone,SeatType,gaiqian)
+		values
+			(#{userName},#{trainName},#{IDCard},#{startstation},#{endstation},#{start_time},#{arrive_time},#{phone},#{SeatName},#{gaiqian})
+		<selectKey resultType="java.lang.Boolean" keyProperty="count">
+			<![CDATA[
+				select count(*) from userticket where TrainName=#{trainName} and userName=#{userName}
+			]]>
+		</selectKey>
+	</insert>
+	
+	<select id="SearchStartStation_NO" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select station_no from trainstion where TrainName=#{trainName} and station_name=#{startstation};
+	</select>
+	
+	<select id="Search_Befor_StartStation_NO" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select station_no from trainstion where TrainName=#{Befor_trianName} and station_name=#{startstation};
+	</select>	
+	
+	<select id="Search_Befor_EndStation_NO" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select station_no from trainstion where TrainName=#{Befor_trianName} and station_name=#{endstation};
+	</select>
+	<!-- 
+	
+	
+		删除userticket 表中原来的车辆
+	
+	 -->
+	 
+	<delete id="delete_Befor_Trian" parameterType="java.util.Map">
+		DELETE FROM userticket WHERE userName=#{userName} AND TrainName=#{Befor_trianName}
+	</delete>
+	 
+	<!-- 
+	
+	
+	
+		更新车票数量
+	
+	
+	 -->
+	<update id="UpdateSeat_FirstClass" parameterType="java.util.Map">
+		UPDATE trainstion SET FirstClass=FirstClass-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_SecondClass" parameterType="java.util.Map">
+		UPDATE trainstion SET SecondClass=SecondClass-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_NoSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET NoSeat=NoSeat-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_SoftBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET SoftBerth=SoftBerth-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="UpdateSeat_HardBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET HardBerth=HardBerth-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	<update id="UpdateSeat_HardSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET HardSeat=HardSeat-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	<update id="UpdateSeat_high_GradeSB" parameterType="java.util.Map">
+		UPDATE trainstion SET high_GradeSB=high_GradeSB-1 WHERE TrainName=#{trainName} AND station_no=#{station_no}
+	</update>
+	
+	<!-- 
+	
+	
+	
+		更新车票数量增加
+	
+	
+	 -->
+	<update id="ADD_UpdateSeat_FirstClass" parameterType="java.util.Map">
+		UPDATE trainstion SET FirstClass=FirstClass+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="ADD_UpdateSeat_SecondClass" parameterType="java.util.Map">
+		UPDATE trainstion SET SecondClass=SecondClass+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="ADD_UpdateSeat_NoSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET NoSeat=NoSeat+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="ADD_UpdateSeat_SoftBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET SoftBerth=SoftBerth+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	
+	<update id="ADD_UpdateSeat_HardBerth" parameterType="java.util.Map">
+		UPDATE trainstion SET HardBerth=HardBerth+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	<update id="ADD_UpdateSeat_HardSeat" parameterType="java.util.Map">
+		UPDATE trainstion SET HardSeat=HardSeat+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	<update id="ADD_UpdateSeat_high_GradeSB" parameterType="java.util.Map">
+		UPDATE trainstion SET high_GradeSB=high_GradeSB+1 WHERE TrainName=#{Befor_trianName} AND station_no=#{station_no}
+	</update>
+	
+</mapper>

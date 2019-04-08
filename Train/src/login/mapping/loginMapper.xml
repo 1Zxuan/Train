@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="login.mapping.loginMapper">
+ 	<resultMap type="login.Bean.User" id="resultCheck">
+ 		<id column="userName" property="userName" />
+ 		<result column="password" property="password" />
+ 		<result column="type" property="type"/>
+ 	</resultMap>
+ 	
+ 	<resultMap type="java.util.Map" id="resultloginCheck">
+ 		<result column="userName" property="userName" />
+ 		<result column="password" property="password" />
+ 		<result column="type" property="type"/>
+ 	</resultMap>
+ 	
+ 	<!-- 
+ 	
+ 		登录验证
+ 		
+ 	-->
+	<select id="CheckUser"  parameterType="java.util.Map" resultMap="resultloginCheck">
+		select * from user where userName=#{userName} and password=#{password}
+	</select>
+	
+	
+	<!-- 
+	
+ 		验证用户名是否存在
+ 		
+ 	-->
+	<select id="CheckuserName" parameterType="java.util.Map" resultType="java.lang.Boolean">
+	
+		<![CDATA[
+			select count(*) from user where userName=#{userName}
+		]]>
+		
+	</select>
+	
+	
+	
+	
+	
+	
+	<!-- 
+	
+ 		验证身份证是否存在
+ 		
+ 	-->
+	<select id="CheckIDCard" parameterType="java.util.Map" resultType="java.lang.Boolean">
+	
+		<![CDATA[
+			select count(*) from user where IDCard=#{IDCard}
+		]]>
+	
+	</select>
+	
+	
+	
+	<!-- 
+	
+		插入用户
+	
+	-->
+	<insert id="InsertUser" parameterType="java.util.Map">
+		INSERT INTO USER 
+			(userName,password,IDCard,name,email,phone,tourist) 
+		VALUES 
+			(#{userName},#{password},#{IDCard},#{Name},#{Email},#{PhoneNum},#{Type})
+		<selectKey resultType="java.lang.Boolean" keyProperty="count">
+			<![CDATA[
+				select count(*) from user where userName=#{userName}
+			]]>
+		</selectKey>
+	</insert>
+	
+	
+	<insert id="Register" parameterType="java.util.Map" >
+		insert into user values(#{userName},#{password},#{IDCrad},#{Name},#{Email},#{PhoneNum},#{Type})
+	</insert>
+	
+	
+	
+</mapper>
